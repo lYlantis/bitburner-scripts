@@ -1,4 +1,4 @@
-import { other_gangs, gang_names, priority_crimes } from "enumerations.js"
+import { other_gangs, gang_names, priority_crimes_before_gang } from "enumerations.js"
 /** @param {NS} ns */
 export async function main(ns) {
   let clash_start_chance = .55;
@@ -85,20 +85,27 @@ export async function main(ns) {
       }
 
       ns.print(gang_info.wantedPenalty)
-      if(gang_info.wantedLevel > 1000 && gang_info.wantedPenalty < .9) {
+      if(gang_info.wantedLevel > 1000 && gang_info.wantedPenalty < .8) {
         task =  "Vigilante Justice";
       } else {
         let reputation = ns.singularity.getFactionRep("Slum Snakes");
-        if(reputation < 1000000) {
+        if(reputation < 1000000 || length < 12) {
           if(count % 2 == 1) {
           task = "Human Trafficking";
-        } else {
-          task = "Terrorism";
-        }
-        count += 1;
+          } else {
+            task = "Terrorism";
+          }
+          count += 1;
+        } else if (!won_all_territory) {
+          if(count % 2 == 1) {
+            task = "Human Trafficking";
+            } else {
+              task = "Territory Warfare";
+            }
+            count += 1;
+          // task = "Run a Con"
         } else {
           task = "Human Trafficking";
-          // task = "Run a Con"
         }
       }
 
